@@ -26,14 +26,14 @@ public class PeopleRestController {
 
     //-------------------Retrieve All Users--------------------------------------------------------
      
-//    @RequestMapping(value = "/users/", method = RequestMethod.GET)
-//    public ResponseEntity<List<People>> listAllUsers() {
-//        List<People> people = peopleService.findAllPeople();
-//        if(people.isEmpty()){
-//            return new ResponseEntity<List<People>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-//        }
-//        return new ResponseEntity<List<People>>(people, HttpStatus.OK);
-//    }
+      @RequestMapping(value = "/users/", method = RequestMethod.GET)
+      public ResponseEntity<List<People>> listAllUsers() {
+          List<People> people = peopleService.findAllPeople();
+          if(people.isEmpty()){
+              return new ResponseEntity<List<People>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+          }
+          return new ResponseEntity<List<People>>(people, HttpStatus.OK);
+		}
  
  
     
