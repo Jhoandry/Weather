@@ -6,6 +6,7 @@ import com.weather.weatherService.models.People;
 
 public interface PeopleService {
 
-	People findById(long id);
+	People findById(Integer id);
 	List<People> findAllPeople();
+	People savePerson(People person);
 }

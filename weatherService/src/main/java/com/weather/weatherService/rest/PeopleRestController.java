@@ -36,7 +36,7 @@ public class PeopleRestController {
     //-------------------Retrieve Single User--------------------------------------------------------
      
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<People> getUser(@PathVariable("id") long id) {
+    public ResponseEntity<People> getUser(@PathVariable("id") Integer id) {
         System.out.println("Fetching User with id " + id);
         People person = peopleService.findById(id);
         if (person == null) {

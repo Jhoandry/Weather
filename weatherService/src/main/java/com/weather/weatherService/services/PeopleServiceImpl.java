@@ -1,45 +1,35 @@
 package com.weather.weatherService.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.weather.weatherService.models.People;
+import com.weather.weatherService.repositories.PeopleRepository;
 
 @Service("PeopleService")
 
 public class PeopleServiceImpl implements PeopleService {
 
-	List<People> people = generarUsuarios();
+	@Autowired
+	private PeopleRepository peopleRepository;
 	
 	@Override
-	public People findById(long id) {
-		
-		for(People person : this.people) {
-			if(person.getId() == id)
-				return person;
-		}
-		return null;
+	public People findById(Integer id) {
+		return peopleRepository.findOne(id);
 	}
 
 	@Override
 	public List<People> findAllPeople() {
-		return this.people;
+		return (List<People>) peopleRepository.findAll();
+	}
+
+	@Override
+	public People savePerson(People person) {
+		return peopleRepository.save(person);
 	}
 
 	
-	//metodos privados 
-	
-	private List<People> generarUsuarios(){
-		List<People> people = new ArrayList<People>();
-		
-		people.add(new People(0,"Andres"));
-		people.add(new People(1,"Adolfo"));
-		people.add(new People(2,"Emil"));
-		people.add(new People(3,"Exiober"));
-		people.add(new People(4,"Arnaldo"));
-		
-		return people;
-	}
+
 }
