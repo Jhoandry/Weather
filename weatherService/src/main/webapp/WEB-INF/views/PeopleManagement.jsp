@@ -18,23 +18,23 @@
 	        		<div align="center">
 	        			<h1>Weather Service</h1>
 	        		</div>
-					<st:form action="validarlogin">
+					<form action="/user/" method="post">
 		                <div class="form-group">
 		                  <div class="input-group">
 		                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-		                    <input type="text" name="usuario" class="form-control p_input" placeholder="Usuario">		                    
+		                    <input type="text" name="nombre" class="form-control p_input" placeholder="Usuario">		                    
 		                  </div>
 		                </div>
 		                <div class="form-group">
 		                  <div class="input-group">
-		                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-		                    <input type="password" name="password" class="form-control p_input" placeholder="Contraseña">
+		                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+		                    <input type="password" name="usuario" class="form-control p_input" placeholder="Contraseña">
 		                  </div>
 		                </div>
 		                <div class="text-center">
 		                  <button type="submit" class="btn btn-primary">Login</button>
 		                </div>
-	              	</st:form>
+	              	</form>
 	            </div>
 	        </div>
 		</div>

@@ -1,5 +1,6 @@
 package com.weather.weatherService.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,10 @@ public class PeopleServiceImpl implements PeopleService {
 
 	@Override
 	public List<People> findAllPeople() {
-		return (List<People>) peopleRepository.findAll();
+		List<People> people = new ArrayList<People>();
+		peopleRepository.findAll().forEach(people::add);
+		
+		return people;
 	}
 
 	@Override
