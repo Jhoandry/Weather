@@ -3,24 +3,24 @@ package com.weather.weatherService.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document 
-public class People {
+@Document(collection = "user")
+public class User {
 	@Id
 	private Integer id;
 	private String nombre;
-	private String usuario;
+	private String email;
 	
 	
-	public People(Integer id, String nombre, String usuario) {
+	public User(Integer id, String nombre, String email) {
 		this.id = id;
 		this.nombre = nombre;
-		this.usuario = usuario;
+		this.email = email;
 	}
 	
-	public People() {
+	public User() {
 		this.id = 0;
 		this.nombre = "";
-		this.usuario = "";
+		this.email = "";
 	}
 	
 	public Integer getId() {
@@ -36,12 +36,12 @@ public class People {
 		this.nombre = nombre;
 	}
 
-	public String getUsuario() {
-		return usuario;
+	public String getemail() {
+		return email;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setemail(String email) {
+		this.email = email;
 	}
 	
 	

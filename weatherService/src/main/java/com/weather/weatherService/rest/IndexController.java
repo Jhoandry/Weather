@@ -8,7 +8,7 @@ public class IndexController {
 
 	@RequestMapping("/")
 	public String getIndexPage(){
-		return "PeopleManagement";
+		return "index";
 	}
 
 }
