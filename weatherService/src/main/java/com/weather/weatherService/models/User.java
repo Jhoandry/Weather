@@ -5,30 +5,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
 public class User {
-	@Id
-	private Integer id;
+	@Id private String email;
 	private String nombre;
-	private String email;
 	
+
 	
-	public User(Integer id, String nombre, String email) {
-		this.id = id;
+	public User(String nombre, String email) {
 		this.nombre = nombre;
 		this.email = email;
 	}
 	
 	public User() {
-		this.id = 0;
 		this.nombre = "";
 		this.email = "";
 	}
-	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -36,14 +27,12 @@ public class User {
 		this.nombre = nombre;
 	}
 
-	public String getemail() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setemail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
 	
 }

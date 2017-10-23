@@ -1,6 +1,11 @@
 
 app.controller("generalControlador",  ['$scope', 'UserService', function($scope, UserService) {
     var self = this;
+    
+    self.formSubscribirse = false;
+    self.menuLogueo = false;
+    self.botonSubscribirse = true;
+    
     self.user={id:null,nombre:'',email:''};
     self.users=[];
         
@@ -19,7 +24,7 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     self.createUser = function(user){
         UserService.createUser(user)
 	              .then(
-                self.fetchAllUsers, 
+	            		  self.mostrarMenuLogueo(), 
 			              function(errResponse){
 				               console.error('Error while creating User.');
 			              }	
@@ -29,7 +34,7 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
    self.updateUser = function(user, id){
         UserService.updateUser(user, id)
 	              .then(
-			              self.fetchAllUsers, 
+	            		  self.mostrarMenuLogueo(), 
 			              function(errResponse){
 				               console.error('Error while updating User.');
 			              }	
@@ -56,7 +61,6 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
             self.updateUser(self.user, self.user.id);
             console.log('User updated with id ', self.user.id);
         }
-        self.reset();
     };
         
     self.edit = function(id){
@@ -76,11 +80,21 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
         }
         self.deleteUser(id);
     };
-
     
     self.reset = function(){
-        self.user={id:null,username:'',address:'',email:''};
+        self.user={id:null,nombre:'',email:''};
         $scope.myForm.$setPristine(); //reset Form
     };
+    
+    self.mostrarFormSubscribirse = function() {
+    	self.formSubscribirse = !self.formSubscribirse;
+    	self.botonSubscribirse = !self.botonSubscribirse;
+    };
+    
+    self.mostrarMenuLogueo = function(){
+    	console.log('mostrar menu logueo')
+    	self.menuLogueo = !self.menuLogueo; 
+    	self.formSubscribirse = !self.formSubscribirse;
+    }
 
 }]);

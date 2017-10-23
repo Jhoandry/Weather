@@ -9,5 +9,5 @@ public interface UserService {
 	User findById(Integer id);
 	List<User> findAllUser();
 	User saveUser(User person);
-	boolean isUserExist(Integer id);
+	boolean isUserExist(String email);
 }

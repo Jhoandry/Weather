@@ -58,7 +58,7 @@ public class UserRestController {
 
     	System.out.println("Creating User " + user.getNombre());
     		 
-	        if (userService.isUserExist(user.getId())) {
+	        if (userService.isUserExist(user.getEmail())) {
 	            System.out.println("A User with name " + user.getNombre() + " already exist");
 	            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 	        }
@@ -66,7 +66,7 @@ public class UserRestController {
 	        userService.saveUser(user);
 	 
 	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
+	        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getEmail()).toUri());
 	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	    }
          
