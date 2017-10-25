@@ -11,23 +11,15 @@ import com.weather.weatherService.models.User;
 import com.weather.weatherService.repositories.UserRepository;
 
 @Service("UserService")
-
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired 
-	private MongoOperations mongo;
 	
-	@Override
-	public User findById(Integer id) {
-		return userRepository.findOne(id);
-	}
-
 	@Override
 	public List<User> findAllUser() {
 		List<User> User = new ArrayList<User>();
-		userRepository.findAll().forEach(User::add);
+		userRepository.findAllUser().forEach(User::add);
 		
 		return User;
 	}
@@ -35,7 +27,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User saveUser(User person) {
 		List<User> User = findAllUser();
-		return userRepository.save(person);
+		return userRepository.saveUser(person);
 	}
 
 	@Override
@@ -46,6 +38,18 @@ public class UserServiceImpl implements UserService {
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public User findByName(String nombre) {
+		User user = new User();
+		try {
+			user = userRepository.finUserName(nombre);
+		}catch(Exception e) {
+			user = new User();
+		}
+		
+		return user;
 	}
 	
 }

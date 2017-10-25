@@ -3,10 +3,11 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     var self = this;
     
     self.formSubscribirse = false;
-    self.menuLogueo = false;
+    self.menu = false;
+    self.formLogin = false;
     self.botonSubscribirse = true;
     
-    self.user={id:null,nombre:'',email:''};
+    self.user={nombre:'',email:''};
     self.users=[];
         
     self.fetchAllUsers = function(){
@@ -20,21 +21,34 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
       					}
 			       );
     };
-     
+    self.findUserName = function(email){
+    	UserService.findUserName(email)
+    	.then(
+    		function(data) {
+			    self.user = data;
+			    if(self.user.email!="")
+			    	self.mostrarMenu();
+		    },
+      		function(errResponse){
+		    	console.error('Error while creating User.');
+	        }	
+  );
+    };
+    
     self.createUser = function(user){
         UserService.createUser(user)
-	              .then(
-	            		  self.mostrarMenuLogueo(), 
-			              function(errResponse){
-				               console.error('Error while creating User.');
-			              }	
-            );
+	    .then(
+	          self.mostrarMenu(), 
+			  	function(errResponse){
+	        	  console.error('Error while creating User.');
+			    }	
+        );
     };
 
    self.updateUser = function(user, id){
         UserService.updateUser(user, id)
 	              .then(
-	            		  self.mostrarMenuLogueo(), 
+	            		  self.mostrarMenu(), 
 			              function(errResponse){
 				               console.error('Error while updating User.');
 			              }	
@@ -53,7 +67,7 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 
     self.fetchAllUsers();
 
-    self.submit = function() {
+    self.submitSubscribirse = function() {
         if(self.user.id==null){
             console.log('Saving New User', self.user);    
             self.createUser(self.user);
@@ -61,6 +75,11 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
             self.updateUser(self.user, self.user.id);
             console.log('User updated with id ', self.user.id);
         }
+    };
+    
+    self.submitLogin = function() {
+    	console.log('find User', self.user.email);      	
+    	self.findUserName(self.user.nombre);
     };
         
     self.edit = function(id){
@@ -91,10 +110,27 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     	self.botonSubscribirse = !self.botonSubscribirse;
     };
     
-    self.mostrarMenuLogueo = function(){
-    	console.log('mostrar menu logueo')
-    	self.menuLogueo = !self.menuLogueo; 
-    	self.formSubscribirse = !self.formSubscribirse;
-    }
+    self.mostrarMenu = function(){
+    	console.log('mostrar menu')
+    	self.menu = !self.menu; 
+    	self.formSubscribirse = false;
+    	self.formLogin = false;
+    	self.botonSubscribirse = false;
+    };
+    
+    self.mostrarFormLogueo = function(){
+    	console.log('mostrar form loguearse')
+    	self.formLogin = !self.formLogin;
+    	self.botonSubscribirse = !self.botonSubscribirse;
+    };
+    
+    self.salir = function(){
+    	console.log('salir')
+    	self.user={nombre:'',email:''};
+    	self.menu = false; 
+    	self.formSubscribirse = false;
+    	self.formLogin = false;
+    	self.botonSubscribirse = true;
+    };
 
 }]);

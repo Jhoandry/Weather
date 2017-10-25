@@ -5,7 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
 public class User {
-	@Id private String email;
+	@Id
+	private String email;
 	private String nombre;
 	
 
@@ -33,6 +34,10 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	@Override
+	public String toString() {
+		return String.format("[email = %s, nombre = %s]", this.getEmail(), this.getNombre());
 	}
 	
 }

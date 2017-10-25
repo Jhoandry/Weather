@@ -54,7 +54,20 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 										return $q.reject(errResponse);
 									}
 							);
-			}
+			},
+			
+			findUserName: function(name){
+				return $http.post('http://localhost:8080/user/'+name, name)
+						.then(
+								function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									console.error('Error while creating user');
+									return $q.reject(errResponse);
+								}
+						);
+		    }
 		
 	};
 

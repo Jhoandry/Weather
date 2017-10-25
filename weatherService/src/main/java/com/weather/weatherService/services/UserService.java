@@ -6,7 +6,7 @@ import com.weather.weatherService.models.User;
 
 public interface UserService {
 
-	User findById(Integer id);
+	User findByName(String nombre);
 	List<User> findAllUser();
 	User saveUser(User person);
 	boolean isUserExist(String email);

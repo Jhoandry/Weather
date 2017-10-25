@@ -39,12 +39,12 @@ public class UserRestController {
     
     //-------------------Retrieve Single User--------------------------------------------------------
      
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
-        System.out.println("Fetching User with id " + id);
-        User person = userService.findById(id);
+    @RequestMapping(value = "/user/{email}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUser(@PathVariable("email") String nombre) {
+        System.out.println("Fetching User with nomnbre :  " + nombre);
+        User person = userService.findByName(nombre);
         if (person == null) {
-            System.out.println("User with id " + id + " not found");
+            System.out.println("User with name " + nombre + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<User>(person, HttpStatus.OK);
