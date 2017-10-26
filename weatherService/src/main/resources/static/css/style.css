@@ -199,7 +199,10 @@ textarea {
 
 table {
   border-collapse: collapse;
-  border-spacing: 0; }
+  border-spacing: 0; 
+  color: #1e202b;
+  border-radius: 15px;
+  width : 100%;}
 
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -1679,4 +1682,8 @@ form textarea {
     .site-footer .social-links a:hover {
       background: #009ad8;
       color: white; }
+.logo{
+	    width: 12%;
+}
+
 

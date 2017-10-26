@@ -5,12 +5,14 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     self.formSubscribirse = false;
     self.menu = false;
     self.formLogin = false;
+    self.tablePlaces = false;
     self.botonSubscribirse = true;
     
     self.user = {nombre:'',email:''};
+    self.users=[];
     self.location = {nombre:''};
     self.temperatura = {temperatura :''};
-    self.users=[];
+    self.locations=[];
 
     //************* CRUD Usuario ***********************
     
@@ -67,8 +69,6 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 				              }	
 	            );
 	    };
-	
-	    self.fetchAllUsers();
 	
 	    self.submitSubscribirse = function() {
 	        if(self.user.id==null){
@@ -137,19 +137,39 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    };
 
 	//**********************Wheater Services*********************
-	    self.weatherLocation = function(nombreLocacion){
-	    	UserService.findWeather(nombreLocacion)
+	    self.weatherLocation = function(woeid){
+	    	UserService.findWeather(woeid)
 	    	.then(
 	    		function(data) {
 				    console.log(data);
-				    self.temperatura.temperatura = "Temperatura en " + nombreLocacion + " es " + data.query.results.channel.item.condition.temp + "°C, esta "+ data.query.results.channel.item.condition.text;
+				    self.temperatura.temperatura = "Temperatura  es " + data.query.results.channel.item.condition.temp + "°C, esta "+ data.query.results.channel.item.condition.text;
 			    },
 	      		function(errResponse){
-			    	console.error('Error while creating User.');
+			    	console.error('Error weatherLocation.');
 		        });
 	    };
-	    self.getWeatherLocation = function() {
-	    	console.log('getWeather function ', self.location.nombre );      	
-	    	self.weatherLocation(self.location.nombre);
+	    self.findLocation = function(nombreLocacion){
+	    	UserService.findLocation(nombreLocacion)
+	    	.then(
+	    		function(data) {
+				    console.log(data);	
+				    if(data.query.results != null)
+				    	self.locations = data.query.results.place;
+				    if(self.locations.length > 0)
+				    	self.tablePlaces = true;
+			    },
+	      		function(errResponse){
+			    	console.error('Error findLocation.');
+		        });
 	    };
+	    self.getWeatherLocation = function(woeid) {
+	    	console.log('getWeather function ', woeid );      	
+	    	self.weatherLocation(woeid);
+	    };
+	    
+	    self.getLocation = function(){
+	    	console.log('Obteniendo locacion ', self.location.nombre);
+	        self.locations=[];
+	    	self.findLocation(self.location.nombre);
+	    }
 }]);

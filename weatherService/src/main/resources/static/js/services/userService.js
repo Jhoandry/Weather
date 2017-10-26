@@ -69,18 +69,34 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 						);
 		    },
 		    
-		    findWeather : function(nombreLocacion) {
-		    	 var searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + nombreLocacion + "') and u='c'"
+		    findWeather : function(woeid) {
+		    	
+		    	 var searchtext = "select item.condition from weather.forecast where woeid="+woeid+" and u='c'"
 	    	     return $http.get("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json")
 		    	       .then(
 								function(response){
 									return response.data;
 								}, 
 								function(errResponse){
-									console.error('Error while creating user');
+									console.error('Error find weather');
 									return $q.reject(errResponse);
 								}
 						);
+		    },
+		    
+		    findLocation : function(nombreLocacion){
+		    	var searchText = "select * from geo.places where text='"+nombreLocacion+"'";
+		    	return $http.get("https://query.yahooapis.com/v1/public/yql?q=" + searchText + "&format=json")
+		    	 		.then(
+		    	 				function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									console.error('Error find location');
+									return $q.reject(errResponse);
+								}
+		    	 		
+		    	 		);
 		    }
 		
 	};
