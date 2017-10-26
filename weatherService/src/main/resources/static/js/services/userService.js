@@ -67,6 +67,20 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 									return $q.reject(errResponse);
 								}
 						);
+		    },
+		    
+		    findWeather : function(nombreLocacion) {
+		    	 var searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + nombreLocacion + "') and u='c'"
+	    	     return $http.get("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json")
+		    	       .then(
+								function(response){
+									return response.data;
+								}, 
+								function(errResponse){
+									console.error('Error while creating user');
+									return $q.reject(errResponse);
+								}
+						);
 		    }
 		
 	};

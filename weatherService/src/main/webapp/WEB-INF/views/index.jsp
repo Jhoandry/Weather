@@ -20,6 +20,7 @@
 	<script src="<c:url value='js/app.js' />"></script>
     <script src="<c:url value='js/services/userService.js' />"></script>
     <script src="<c:url value='js/controllers/controller.js' />"></script>
+    
 </head>
 <body ng-controller="generalControlador as GC">
 	
@@ -46,7 +47,7 @@
 							<li class="menu-item current-menu-item"><a ng-click='GC.salir()'>Salir</a></li>
 					</ul>
 					<div ng-show='GC.formSubscribirse' align="right" id="formSubscribirse">
-						<form  ng-show='GC.formSubscribirse' ng-submit="GC.submitSubscribirse()" name="myForm" method="POST" >
+						<form  ng-submit="GC.submitSubscribirse()" name="myForm" method="POST" >
 						    <input type="text" ng-model="GC.user.nombre" placeholder="Nombre" required>
 							<input type="email"  ng-model="GC.user.email" placeholder="Email" required>
 							<button type="submit" >Ok</button>							
@@ -54,7 +55,7 @@
 						<a  ng-click='GC.salir()' >Cancelar</a>
 					</div>
 					<div ng-show='GC.formLogin' align="right" id="formLogin">
-						<form  ng-show='GC.formLogin' ng-submit="GC.submitLogin()" name="myForm" method="POST" >
+						<form  ng-submit="GC.submitLogin()" name="myForm" method="POST" >
 							<input type="text" ng-model="GC.user.nombre" placeholder="Nombre" required>
 							<button type="submit" >Ok</button>
 							
@@ -67,29 +68,31 @@
 		</div> <!-- .site-header -->
 		<div class="hero" data-bg-image="images/banner.png">
 			<div class="container">
-				<form action="#" class="find-location">
-					<input type="text" placeholder="Find your location...">
+				<form ng-submit="GC.getWeatherLocation()" class="find-location">
+					<input type="text" ng-model="GC.location.nombre" placeholder="Find your location...">
 					<input type="submit" value="Find">
 				</form>
 			</div>
-			<div class="col-lg-12 text-center">
-        		<h3>usuarios</h3>
-				<ul>
-					<li ng-repeat="usuario in GC.users">
-						{{usuario.nombre}} - <strong>{{usuario.email}}</strong>
-					</li>
-				</ul>
-        	</div>
+        	<div><h1>{{GC.temperatura.temperatura}}</h1></div>
 		</div>
 	</div>
 	
 	
 <!-- 	MENSAJES DE ALERTA -->
 
-	<div class="alert alert-success">
-	  <button type="button" class="close" data-dismiss="alert">&times;</button>
-	  <strong>¡Cuidado!</strong> Es muy importante que leas este mensaje de alerta.
-	</div>
+<!-- 	<div class="alert alert-success"> -->
+<!-- 	  <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+<!-- 	  <strong>¡Cuidado!</strong> Es muy importante que leas este mensaje de alerta. -->
+<!-- 	</div> -->
+
+<!-- 			<div class=""> -->
+<!--         		<h3>usuarios</h3> -->
+<!-- 				<ul> -->
+<!-- 					<li ng-repeat="usuario in GC.users"> -->
+<!-- 						{{usuario.nombre}} - <strong>{{usuario.email}}</strong> -->
+<!-- 					</li> -->
+<!-- 				</ul> -->
+<!--         	</div> -->
 <!-- FIN MENSAJES ALERTA -->
 
 
