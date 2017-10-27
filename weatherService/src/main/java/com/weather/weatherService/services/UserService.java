@@ -2,6 +2,7 @@ package com.weather.weatherService.services;
 
 import java.util.List;
 
+import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
 
 public interface UserService {
@@ -10,4 +11,5 @@ public interface UserService {
 	List<User> findAllUser();
 	User saveUser(User person);
 	boolean isUserExist(String email);
+	List<Locacion> findLocacionesFav(String email);
 }

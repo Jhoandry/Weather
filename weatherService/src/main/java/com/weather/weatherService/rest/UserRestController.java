@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.MediaType;
+
+import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
 import com.weather.weatherService.services.UserService;
 
@@ -37,10 +39,10 @@ public class UserRestController {
  
  
     
-    //-------------------Retrieve Single User--------------------------------------------------------
+  //-------------------Retrieve Single User--------------------------------------------------------
      
-    @RequestMapping(value = "/user/{email}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable("email") String nombre) {
+    @RequestMapping(value = "/user/{nombre}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUser(@PathVariable("nombre") String nombre) {
         System.out.println("Fetching User with nomnbre :  " + nombre);
         User person = userService.findByName(nombre);
         if (person == null) {
@@ -70,5 +72,15 @@ public class UserRestController {
 	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	    }
          
-	
-}
+  //-------------------Create a User--------------------------------------------------------
+    
+    @RequestMapping(value = "/user/places", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Locacion>> getPlaces(@PathVariable("email") String email) {
+        System.out.println("Fetching locaciones de :  " + email);
+        List<Locacion> locaciones = userService.findLocacionesFav(email);
+        if(locaciones.isEmpty()){
+            return new ResponseEntity<List<Locacion>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+        }
+        return new ResponseEntity<List<Locacion>>(locaciones, HttpStatus.OK);
+    }
+}	

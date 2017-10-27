@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
+import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
 import com.weather.weatherService.repositories.UserRepository;
 
@@ -50,6 +51,14 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return user;
+	}
+
+	@Override
+	public List<Locacion> findLocacionesFav(String email) {
+		List<Locacion> locaciones = new ArrayList<Locacion>();
+		userRepository.findLocacionesFav(email).forEach(locaciones::add);
+		
+		return locaciones;
 	}
 	
 }

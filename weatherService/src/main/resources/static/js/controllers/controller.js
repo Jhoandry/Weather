@@ -5,14 +5,15 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     self.formSubscribirse = false;
     self.menu = false;
     self.formLogin = false;
-    self.tablePlaces = false;
     self.botonSubscribirse = true;
     
     self.user = {nombre:'',email:''};
-    self.users=[];
-    self.location = {nombre:''};
+    self.users = [];
+    self.location = {city:'', country:'', region:'', woeid:0}
     self.temperatura = {temperatura :''};
-    self.locations=[];
+    self.locations = [];
+    self.climalocation = {};
+    self.locationFind = { woeid:0, city:'', country:'', region:''}
 
     //************* CRUD Usuario ***********************
     
@@ -137,17 +138,46 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    };
 
 	//**********************Wheater Services*********************
+	    self.getIcon = function(cod){
+	    	var url= "images/icons/";
+	    	if(cod==1 || cod==2 || cod==3 || cod==37 || cod==38 || cod==39 ||cod==0)
+	    		return url+"icon-8.svg";
+	    	else if(cod==4 || cod==5 || cod==6 || cod==7 || cod==45 || cod==47)
+	    		return url+"icon-11.svg";
+	    	else if(cod==8 || cod==10 || cod==13 || cod==14 || cod==35 || cod==17 ||cod==18)
+	    		return url+"icon-13.svg";
+	    	else if(cod==40 || cod==9 || cod==11 || cod==12)
+	    		return url+"icon-9.svg";	    	
+	    	else if(cod==15 || cod==19 || cod==20 || cod==21 || cod==22 || cod==23 ||cod==24)
+		    	return url+"icon-7.svg";
+	    	else if(cod==26 || cod==27 || cod==28)
+		    	return url+"icon-6.svg";
+	    	else if(cod==29 || cod==30 || cod==44)
+		    	return url+"icon-3.svg";
+	    	else if(cod==31 || cod==32 || cod==33 || cod==34 || cod==36)
+	    		return url+"icon-2.svg";
+	    	else if(cod==16 || cod==25 || cod==41 || cod==42 || cod==43 || cod==46)
+	    		return url+"icon-8.svg";
+	    };
+	    
 	    self.weatherLocation = function(woeid){
 	    	UserService.findWeather(woeid)
 	    	.then(
 	    		function(data) {
 				    console.log(data);
-				    self.temperatura.temperatura = "Temperatura  es " + data.query.results.channel.item.condition.temp + "°C, esta "+ data.query.results.channel.item.condition.text;
+				    if(data.query.results != null){
+				    	self.locationFind.woeid=woeid;
+				    	self.locationFind.city= data.query.results.channel.location.city;
+				    	self.locationFind.country= data.query.results.channel.location.country;
+				    	self.locationFind.region= data.query.results.channel.location.region;
+				    	self.climaLocation = data.query.results.channel.item;
+				    }
 			    },
 	      		function(errResponse){
 			    	console.error('Error weatherLocation.');
 		        });
 	    };
+	    
 	    self.findLocation = function(nombreLocacion){
 	    	UserService.findLocation(nombreLocacion)
 	    	.then(
@@ -155,21 +185,23 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 				    console.log(data);	
 				    if(data.query.results != null)
 				    	self.locations = data.query.results.place;
-				    if(self.locations.length > 0)
-				    	self.tablePlaces = true;
 			    },
 	      		function(errResponse){
 			    	console.error('Error findLocation.');
 		        });
 	    };
+	    
 	    self.getWeatherLocation = function(woeid) {
-	    	console.log('getWeather function ', woeid );      	
+	    	console.log('getWeather function ', woeid );  
+	    	self.tablePlace = false;   
+	    	self.locations = [];
 	    	self.weatherLocation(woeid);
 	    };
 	    
 	    self.getLocation = function(){
-	    	console.log('Obteniendo locacion ', self.location.nombre);
-	        self.locations=[];
-	    	self.findLocation(self.location.nombre);
+	    	console.log('Obteniendo locacion ', self.location.city);
+	        self.locations = [];
+	        self.climaLocation = {};
+	    	self.findLocation(self.location.city);
 	    }
 }]);

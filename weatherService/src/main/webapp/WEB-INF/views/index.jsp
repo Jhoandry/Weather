@@ -24,9 +24,9 @@
 		<div class="site-header">
 			<div class="container">
 				<a href="" class="branding">
-					<img src="images/logo.png" alt="" class="logo"  >
+					<img src="images/logo.png" alt="" class="logo" >
 					<div class="logo-type">
-						<h1 class="site-title">Weather Service</h1>
+						<h1 class="site-title">WS</h1>
 						<small class="site-description">Jhoandry Sequera</small>
 					</div>
 				</a>
@@ -59,74 +59,77 @@
 						<a  ng-click='GC.salir()' >Cancelar</a>
 					</div>
 				</div> <!-- .main-navigation -->
+
 				<div class="mobile-navigation"></div>
-			</div>
+			</div>		
 		</div> <!-- .site-header -->
-		<div class="hero" data-bg-image="images/banner.png">
-			<div class="container">
+		<div class="row hero" data-bg-image="images/banner.png">
+		
+			<div class="container col-sm-8" >
 				<form ng-submit="GC.getLocation()" class="find-location">
-					<input type="text" ng-model="GC.location.nombre" placeholder="Find your location...">
+					<input type="text" ng-model="GC.location.city" placeholder="Find your location...">
 					<input type="submit" value="Find">
 				</form>
-			</div>
-			<div class="container">
-				<table class="table table-striped" ng-show='GC.tablePlaces'>
-					<thead>
-				    	<tr>
-				      		<th width="50%;">Distrito - Ciudad <br/>Provincia - Estado</th>
-					  		<th width="25%;">Ciudad</th>
-					  		<th width="25%;">WOEID</th>
-				      	</tr>
-				    </thead>
-				    <tbody>
-				      	<tr ng-repeat="place in GC.locations" >					      	
-					      		<td ng-click="GC.getWeatherLocation(place.woeid)">{{place.name}} <br/> {{place.admin1.content}}</td>
-					    		<td ng-click="GC.getWeatherLocation(place.woeid)">{{place.country.content}}</td>
-					    		<td ng-click="GC.getWeatherLocation(place.woeid)">{{place.woeid}}</td>
-					      					   			
-				  		</tr>
-				    </tbody>
-				</table>
-				
-			</div>
+				<br/>
+				<div class="">
+					<table class="table table-striped" ng-show='GC.locations.length > 0'>
+						<thead>
+					    	<tr>
+					      		<th width="50%;">Distrito - Ciudad <br/>Provincia - Estado</th>
+						  		<th width="25%;">Ciudad</th>
+						  		<th width="25%;">WOEID</th>
+					      	</tr>
+					    </thead>
+					    <tbody>
+					      	<tr ng-repeat="place in GC.locations" >					      	
+						      		<td ng-click="GC.getWeatherLocation(place.woeid)">{{place.name}} <br/> {{place.admin1.content}}</td>
+						    		<td ng-click="GC.getWeatherLocation(place.woeid)">{{place.country.content}}</td>
+						    		<td ng-click="GC.getWeatherLocation(place.woeid)">{{place.woeid}}</td>
+						      					   			
+					  		</tr>
+					    </tbody>
+					</table>
+					
+				</div>
+			</div>		
 			<br/>
-        	<div<h1>{{GC.temperatura.temperatura}}</h1></div>
-			<br/>
-        	<div class="container">
+        	<div class="forecast-table col-sm-12" ng-show='GC.climaLocation.forecast.length > 0' align="center">
+				<div class="container">
 					<div class="forecast-container">
 						<div class="today forecast">
 							<div class="forecast-header">
-								<div class="day">Monday</div>
-								<div class="date">6 Oct</div>
+								<div class="day">{{GC.climaLocation.forecast[0].day}}</div>
+								<div class="date">{{GC.climaLocation.forecast[0].date}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
-								<div class="location">New York</div>
+								<div class="location">{{GC.locationFind.city}}</div>
 								<div class="degree">
-									<div class="num">23<sup>o</sup>C</div>
+									<div class="num">{{GC.climaLocation.condition.temp}}<sup>o</sup>C</div>
 									<div class="forecast-icon">
-										<img src="images/icons/icon-1.svg" alt="" width=90>
+										<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=90>
 									</div>	
+									<span>{{GC.climaLocation.condition.text}}</span>
 								</div>
-								<span><img src="images/icon-umberella.png" alt="">20%</span>
-								<span><img src="images/icon-wind.png" alt="">18km/h</span>
-								<span><img src="images/icon-compass.png" alt="">East</span>
 							</div>
 						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Tuesday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="images/icons/icon-3.svg" alt="" width=48>
+						<div class="forecast"  ng-repeat="clima in GC.climaLocation.forecast track by $index" ng-show ='$index > 0'>
+								<div class="forecast-header">
+									<div class="day">{{clima.day}}</div>
+								</div> <!-- .forecast-header -->
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=48>
+									</div>
+									<div class="degree">{{clima.high}}<sup>o</sup>C</div>
+									<small>{{clima.low}}<sup>o</sup></small>
 								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
-							</div>
-						</div>
+								<small>{{clima.text}}</small>
+								
+						</div>											
 					</div>
-					
+				</div>
 			</div>
+        	
 		</div>
 	</div>
 	

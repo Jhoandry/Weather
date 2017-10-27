@@ -71,7 +71,7 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 		    
 		    findWeather : function(woeid) {
 		    	
-		    	 var searchtext = "select item.condition from weather.forecast where woeid="+woeid+" and u='c'"
+		    	 var searchtext = "select * from weather.forecast where woeid="+woeid+" and u='c'"
 	    	     return $http.get("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json")
 		    	       .then(
 								function(response){
@@ -85,7 +85,7 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 		    },
 		    
 		    findLocation : function(nombreLocacion){
-		    	var searchText = "select * from geo.places where text='"+nombreLocacion+"'";
+		    	var searchText = "select * from geo.places where text='"+nombreLocacion+"*'";
 		    	return $http.get("https://query.yahooapis.com/v1/public/yql?q=" + searchText + "&format=json")
 		    	 		.then(
 		    	 				function(response){

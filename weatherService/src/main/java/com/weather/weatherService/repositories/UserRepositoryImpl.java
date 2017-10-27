@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
 
 @Repository
@@ -42,6 +43,17 @@ public class UserRepositoryImpl implements UserRepository {
 		mongoOperations.save(user);
 		
 		return user;
+	}
+
+	@Override
+	public List<Locacion> findLocacionesFav(String email) {
+		Query query = new Query(Criteria.where("email").is(email));
+		// search operation
+			List<Locacion> locaciones = (List<Locacion>) mongoOperations.findOne(query, Locacion.class);
+			System.out.println("##################  findLocacionesFav");
+			System.out.println(locaciones.size());
+			
+		return locaciones;
 	}
 
 }

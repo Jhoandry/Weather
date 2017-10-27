@@ -1127,7 +1127,8 @@ form textarea {
     float: left; }
     .site-header .branding .logo, .site-header .branding .logo-type {
       display: inline-block;
-      vertical-align: middle; }
+      vertical-align: middle;
+      width: 90px;}
     .site-header .branding .logo {
       margin-right: 10px; }
     .site-header .branding .site-title {
@@ -1216,11 +1217,11 @@ form textarea {
 .hero {
   background-size: cover;
   padding: 70px 0;
-  min-height: 350px; }
+ }
 
 .find-location {
   position: relative;
-  margin-bottom: 70px; }
+  margin-bottom: 20px; }
   .find-location input[type="text"] {
     width: 100%;
     padding: 20px 50px 20px 20px;
@@ -1232,7 +1233,6 @@ form textarea {
     right: 5px;
     bottom: 5px;
     padding: 0 40px; }
-
 .forecast-container {
   width: 100%;
   background: #323544;
@@ -1241,20 +1241,18 @@ form textarea {
   width: 100%;
   overflow: hidden;
   border-radius: 10px;
-  margin-top: -150px;
   margin-bottom: 50px; }
   .forecast-container .forecast {
     display: table-cell;
     vertical-align: top; }
-    .forecast-container .forecast:nth-child(even) {
-      background-color: #262936; }
     @media screen and (max-width: 990px) {
       .forecast-container .forecast {
         display: block;
         width: 16.6667%;
         float: left; } }
     .forecast-container .forecast.today {
-      width: 420px; }
+      width: 380px;
+      background : #3b3b4a; }
       .forecast-container .forecast.today .forecast-header {
         *zoom: 1; }
         .forecast-container .forecast.today .forecast-header:after {
@@ -1273,7 +1271,7 @@ form textarea {
         padding-bottom: 30px; }
       .forecast-container .forecast.today .location {
         font-size: 18px;
-        font-size: 1.2857142857em;
+        font-size: 2.2857142857em;
         font-weight: 400; }
       .forecast-container .forecast.today .degree .num, .forecast-container .forecast.today .degree .forecast-icon {
         display: inline-block;
