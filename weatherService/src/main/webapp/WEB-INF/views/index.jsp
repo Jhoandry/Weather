@@ -65,10 +65,10 @@
 		</div> <!-- .site-header -->
 		<div class="row hero" data-bg-image="images/banner.png">
 		
-			<div class="container col-sm-8" >
+			<div class="container col-sm-10" >
 				<form ng-submit="GC.getLocation()" class="find-location">
-					<input type="text" ng-model="GC.location.city" placeholder="Find your location...">
-					<input type="submit" value="Find">
+					<input type="text" ng-model="GC.location" placeholder="buscar locacion...">
+					<input type="submit" value="Buscar">
 				</form>
 				<br/>
 				<div class="">
@@ -76,7 +76,7 @@
 						<thead>
 					    	<tr>
 					      		<th width="50%;">Distrito - Ciudad <br/>Provincia - Estado</th>
-						  		<th width="25%;">Ciudad</th>
+						  		<th width="25%;">Pais</th>
 						  		<th width="25%;">WOEID</th>
 					      	</tr>
 					    </thead>
@@ -93,43 +93,50 @@
 				</div>
 			</div>		
 			<br/>
-        	<div class="forecast-table col-sm-12" ng-show='GC.climaLocation.forecast.length > 0' align="center">
-				<div class="container">
-					<div class="forecast-container">
-						<div class="today forecast">
-							<div class="forecast-header">
-								<div class="day">{{GC.climaLocation.forecast[0].day}}</div>
-								<div class="date">{{GC.climaLocation.forecast[0].date}}</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="location">{{GC.locationFind.city}}</div>
-								<div class="degree">
-									<div class="num">{{GC.climaLocation.condition.temp}}<sup>o</sup>C</div>
-									<div class="forecast-icon">
-										<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=90>
-									</div>	
-									<span>{{GC.climaLocation.condition.text}}</span>
-								</div>
-							</div>
-						</div>
-						<div class="forecast"  ng-repeat="clima in GC.climaLocation.forecast track by $index" ng-show ='$index > 0'>
+			<div class="container col-sm-10">
+				<div class="forecast-table" ng-show='GC.climaLocation.forecast.length > 0' align="center">
+						<div class="forecast-container">
+							<div class="today forecast">
 								<div class="forecast-header">
-									<div class="day">{{clima.day}}</div>
+									<div class="day">{{GC.climaLocation.forecast[0].day}}</div>
+									<div class="date">{{GC.climaLocation.forecast[0].date}}</div>
 								</div> <!-- .forecast-header -->
 								<div class="forecast-content">
-									<div class="forecast-icon">
-										<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=48>
+									<div class="location">{{GC.locationFind.city}}</div>
+									<div class="degree">
+										<div class="num">{{GC.climaLocation.condition.temp}}<sup>o</sup>C</div>
+										<div class="forecast-icon">
+											<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=90>
+										</div>	
+										<span>{{GC.climaLocation.condition.text}}</span>
 									</div>
-									<div class="degree">{{clima.high}}<sup>o</sup>C</div>
-									<small>{{clima.low}}<sup>o</sup></small>
+									<span><img src="images/cold.png" width=20>{{GC.climaLocation.forecast[0].high}}</span>
+									<span><img src="images/hot.png" width=20>{{GC.climaLocation.forecast[0].low}}</span>
 								</div>
-								<small>{{clima.text}}</small>
-								
-						</div>											
-					</div>
+							</div>
+							<div class="forecast"  ng-repeat="clima in GC.climaLocation.forecast track by $index" ng-show ='$index > 0'>
+									<div class="forecast-header">
+										<div class="day">{{clima.day}}</div>
+									</div> <!-- .forecast-header -->
+									<div class="forecast-content">
+										<div class="forecast-icon">
+											<img ng-src="{{GC.getIcon(clima.code)}}" alt="" width=44>
+										</div>
+										<div class="degree">
+											<div align="right"><img src="images/cold.png" style="float: left;" width=25></div>
+											<div align="center">{{clima.high}}<sup>o</sup>C</div>
+										</div>
+										<div class="degree">
+											<div align="right"><img src="images/hot.png" style="float: left;" width=25></div>
+											<div align="center">{{clima.low}}<sup>o</sup>C</div>
+										</div>
+									</div> 
+									<small>{{clima.text}}</small>
+							</div>											
+						</div>
 				</div>
 			</div>
-        	
+        	        	
 		</div>
 	</div>
 	

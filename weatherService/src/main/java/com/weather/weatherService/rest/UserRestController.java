@@ -72,15 +72,5 @@ public class UserRestController {
 	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	    }
          
-  //-------------------Create a User--------------------------------------------------------
-    
-    @RequestMapping(value = "/user/places", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Locacion>> getPlaces(@PathVariable("email") String email) {
-        System.out.println("Fetching locaciones de :  " + email);
-        List<Locacion> locaciones = userService.findLocacionesFav(email);
-        if(locaciones.isEmpty()){
-            return new ResponseEntity<List<Locacion>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Locacion>>(locaciones, HttpStatus.OK);
-    }
+
 }	

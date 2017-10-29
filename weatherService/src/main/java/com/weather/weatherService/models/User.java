@@ -1,5 +1,8 @@
 package com.weather.weatherService.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,17 +11,19 @@ public class User {
 	@Id
 	private String email;
 	private String nombre;
-	
+	private List<Locacion> locaciones;
 
 	
-	public User(String nombre, String email) {
+	public User(String nombre, String email, List<Locacion> locaciones) {
 		this.nombre = nombre;
 		this.email = email;
+		this.locaciones = locaciones;
 	}
 	
 	public User() {
 		this.nombre = "";
 		this.email = "";
+		this.locaciones = new ArrayList<Locacion>();
 	}
 
 	public String getNombre() {
@@ -35,9 +40,13 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@Override
-	public String toString() {
-		return String.format("[email = %s, nombre = %s]", this.getEmail(), this.getNombre());
+
+	public List<Locacion> getLocaciones() {
+		return locaciones;
+	}
+
+	public void setLocaciones(List<Locacion> locaciones) {
+		this.locaciones = locaciones;
 	}
 	
 }

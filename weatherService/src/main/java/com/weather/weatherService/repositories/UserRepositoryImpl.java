@@ -45,15 +45,4 @@ public class UserRepositoryImpl implements UserRepository {
 		return user;
 	}
 
-	@Override
-	public List<Locacion> findLocacionesFav(String email) {
-		Query query = new Query(Criteria.where("email").is(email));
-		// search operation
-			List<Locacion> locaciones = (List<Locacion>) mongoOperations.findOne(query, Locacion.class);
-			System.out.println("##################  findLocacionesFav");
-			System.out.println(locaciones.size());
-			
-		return locaciones;
-	}
-
 }

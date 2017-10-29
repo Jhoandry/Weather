@@ -12,6 +12,5 @@ public interface UserRepository  {
 	User finUserName(String nombre);
 	List<User> findAllUser();
 	User saveUser(User user);
-	List<Locacion> findLocacionesFav(String email);
 
 }

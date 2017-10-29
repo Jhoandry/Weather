@@ -10,14 +10,12 @@ public class Locacion {
 	private String city;
 	private String country;
 	private String region;
-	private String email;
 	
-	public Locacion(Integer woeid, String city, String country, String region, String email) {
+	public Locacion(Integer woeid, String city, String country, String region) {
 		this.woeid = woeid;
 		this.city = city;
 		this.country = country;
 		this.region = region;
-		this.email = email;
 	}
 
 	public Integer getWoeid() {
@@ -43,17 +41,6 @@ public class Locacion {
 	}
 	public void setRegion(String region) {
 		this.region = region;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("[woeid:%i, city:%s, country:%s, region:%s, email:%s]", this.getWoeid(), this.getCity(), this.getCountry(), this.getRegion(), this.getEmail());
 	}
 
 }

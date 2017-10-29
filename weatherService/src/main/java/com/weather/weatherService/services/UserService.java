@@ -11,5 +11,4 @@ public interface UserService {
 	List<User> findAllUser();
 	User saveUser(User person);
 	boolean isUserExist(String email);
-	List<Locacion> findLocacionesFav(String email);
 }

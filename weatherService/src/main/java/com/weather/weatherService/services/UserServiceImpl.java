@@ -53,12 +53,5 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	@Override
-	public List<Locacion> findLocacionesFav(String email) {
-		List<Locacion> locaciones = new ArrayList<Locacion>();
-		userRepository.findLocacionesFav(email).forEach(locaciones::add);
-		
-		return locaciones;
-	}
 	
 }

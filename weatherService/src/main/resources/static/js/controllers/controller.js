@@ -7,27 +7,14 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     self.formLogin = false;
     self.botonSubscribirse = true;
     
-    self.user = {nombre:'',email:''};
-    self.users = [];
-    self.location = {city:'', country:'', region:'', woeid:0}
-    self.temperatura = {temperatura :''};
+    self.user = {email:'',nombre:'', locaciones: []};
+    self.location = '';
     self.locations = [];
     self.climalocation = {};
     self.locationFind = { woeid:0, city:'', country:'', region:''}
 
     //************* CRUD Usuario ***********************
     
-	    self.fetchAllUsers = function(){
-	        UserService.fetchAllUsers()
-	            .then(
-						       function(d) {
-							        self.users = d;
-						       },
-	      					function(errResponse){
-	      						console.error('Error while fetching Currencies');
-	      					}
-				       );
-	    };
 	    self.findUserName = function(email){
 	    	UserService.findUserName(email)
 	    	.then(
@@ -199,9 +186,9 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    };
 	    
 	    self.getLocation = function(){
-	    	console.log('Obteniendo locacion ', self.location.city);
+	    	console.log('Obteniendo locacion ', self.location);
 	        self.locations = [];
 	        self.climaLocation = {};
-	    	self.findLocation(self.location.city);
+	    	self.findLocation(self.location);
 	    }
 }]);
