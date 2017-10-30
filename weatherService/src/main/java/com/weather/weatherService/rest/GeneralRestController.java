@@ -60,7 +60,7 @@ public class GeneralRestController {
 
     	System.out.println("Creating User " + user.getNombre());
     		 
-	        if (userService.isUserExist(user.getEmail())) {
+	        if (userService.isUserExist(user.getNombre())) {
 	            System.out.println("A User with name " + user.getNombre() + " already exist");
 	            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	        }else {

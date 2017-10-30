@@ -1,5 +1,6 @@
+'use strict';
 
-app.controller("generalControlador",  ['$scope', 'UserService', function($scope, UserService) {
+app.controller("generalControlador",  ['$scope', 'UserService', '$timeout', function($scope , UserService, $timeout) {
     var self = this;
     
     self.formSubscribirse = false;
@@ -13,17 +14,23 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     self.climalocation = {};
     self.locationFind = { woeid:0, city:'', country:'', region:''}
     self.locacionesFav = [];
-
-    //************* CRUD Usuario ***********************
     
-	    self.findUserName = function(email){
-	    	UserService.findUserName(email)
+    self.cantidadPolling = 0;
+    //************* Usuario ***********************
+    
+	    self.findUserName = function(nombre){
+	    	UserService.findUserName(nombre)
 	    	.then(
 	    		function(data) {
 				    self.user = data;
-				    if(self.user.email!=""){
-				    	self.mostrarMenu();
+				    if(self.user.nombre!=""){
+				    	self.mostrarMenu();			
 				    	self.buscarClimaFav();
+				    	self.polling();
+				    }else{
+				    	self.mensaje = "Unregistered user";
+				    	$(".alert").show();			    	
+					    $(".alert").fadeOut(4500);
 				    }
 			    },
 	      		function(errResponse){
@@ -34,31 +41,17 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    self.createUser = function(user){
 	        UserService.createUser(user)
 		    .then(
-		          self.mostrarMenu(), 
+		    	   function(data) {
+					    self.user = data;
+					    self.mostrarMenu();
+				    },
 				  	function(errResponse){
 		        	  console.error('Error while creating User.');
+		        	  	self.mensaje = " User already exist";
+				    	$(".alert").show();			    	
+					    $(".alert").fadeOut(4500);
 				    }	
 	        );
-	    };
-	
-	   self.updateUser = function(user, id){
-	        UserService.updateUser(user, id)
-		              .then(
-		            		  self.mostrarMenu(), 
-				              function(errResponse){
-					               console.error('Error while updating User.');
-				              }	
-	            );
-	    };
-	
-	   self.deleteUser = function(id){
-	        UserService.deleteUser(id)
-		              .then(
-				              self.fetchAllUsers, 
-				              function(errResponse){
-					               console.error('Error while deleting User.');
-				              }	
-	            );
 	    };
 	
 	    self.submitSubscribirse = function() {
@@ -72,29 +65,9 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    };
 	    
 	    self.submitLogin = function() {
-	    	console.log('find User', self.user.email);      	
+	    	console.log('find User', self.user.nombre);      	
 	    	self.findUserName(self.user.nombre);
 	    };
-	        
-	//    self.edit = function(id){
-	//        console.log('id to be edited', id);
-	//        for(var i = 0; i < self.users.length; i++){
-	//            if(self.users[i].id == id) {
-	//               self.user = angular.copy(self.users[i]);
-	//               break;
-	//            }
-	//        }
-	//    };
-	        
-	//    self.remove = function(id){
-	//        console.log('id to be deleted', id);
-	//        if(self.user.id === id) {//clean form if the user to be deleted is shown there.
-	//           self.reset();
-	//        }
-	//        self.deleteUser(id);
-	//    };
-	    
-    
     
     
     //**********************Opciones del menu *********************
@@ -158,17 +131,21 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    	var x;
 	    	self.locacionesFav = [];
     		for (x in self.user.locaciones) {
+    			self.cantidadPolling++;    	    	
+    	    	if(self.cantidadPolling <= 2000){
+    	    		console.log("cantidad Polling" + self.cantidadPolling);
+        			UserService.findWeather(self.user.locaciones[x].woeid)
+        	    	.then(
+        	    		function(data) {
+        				    if(data.query.results != null){
+        				    	 self.locacionesFav.push(data.query.results.channel);
+        				    }
+        			    },
+        	      		function(errResponse){
+        			    	console.error('Error weatherLocation.');
+        		        });
+	        	}
 
-    			UserService.findWeather(self.user.locaciones[x].woeid)
-    	    	.then(
-    	    		function(data) {
-    				    if(data.query.results != null){
-    				    	 self.locacionesFav.push(data.query.results.channel);
-    				    }
-    			    },
-    	      		function(errResponse){
-    			    	console.error('Error weatherLocation.');
-    		        });
     		}
 	    };
 	    	    
@@ -198,6 +175,11 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 				    console.log(data);	
 				    if(data.query.results != null)
 				    	self.locations = data.query.results.place;
+				    else{
+				    	self.mensaje = "location not found";
+				    	$(".alert").show();			    	
+					    $(".alert").fadeOut(4500);
+				    }
 			    },
 	      		function(errResponse){
 			    	console.error('Error findLocation.');
@@ -221,6 +203,16 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 
 		//**********************Locaciones Favoritas*********************
 	    
+	    self.polling = function() {
+	    	console.log("haciendo polling")
+	        $timeout(function() {
+	        	if(self.cantidadPolling <= 2000){
+	        		self.buscarClimaFav();
+	        		 self.polling();
+	        	}
+	        }, 100000);
+	    };     
+	    
 	    self.updateLocation = function(user){
 	    	UserService.addLocacion(user)
 	    	.then(
@@ -228,6 +220,7 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 				    console.log(data);
 				    self.user.locaciones = data.locaciones;
 				    self.buscarClimaFav();
+				    self.polling();
 			    },
 	      		function(errResponse){
 			    	console.error('Error weatherLocation.');

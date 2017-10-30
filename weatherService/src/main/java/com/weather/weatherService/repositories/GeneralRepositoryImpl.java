@@ -1,6 +1,5 @@
 package com.weather.weatherService.repositories;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
 
 @Repository
@@ -20,7 +18,7 @@ public class GeneralRepositoryImpl implements GeneralRepository {
 	MongoOperations mongoOperations;
 	
 	@Override
-	public User finUserName(String nombre) {
+	public User findByName(String nombre) {
 		Query query = new Query(Criteria.where("nombre").is(nombre));
 		// search operation
 			User user = (User) mongoOperations.findOne(query, User.class);

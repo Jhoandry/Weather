@@ -32,10 +32,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean isUserExist(String email) {
+	public boolean isUserExist(String nombre) {
 		List<User> users = findAllUser();
 		for(User user : users) {
-			if(user.getEmail().equals(email))
+			if(user.getNombre().equals(nombre))
 				return true;
 		}
 		return false;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 	public User findByName(String nombre) {
 		User user = new User();
 		try {
-			user = userRepository.finUserName(nombre);
+			user = userRepository.findByName(nombre);
 		}catch(Exception e) {
 			user = new User();
 		}

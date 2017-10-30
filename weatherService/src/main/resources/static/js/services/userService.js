@@ -3,19 +3,6 @@
 app.factory('UserService', ['$http', '$q', function($http, $q){
 
 	return {
-		
-			fetchAllUsers: function() {
-					return $http.get('http://localhost:8080/user/')
-							.then(
-									function(response){
-										return response.data;
-									}, 
-									function(errResponse){
-										console.error('Error while fetching users');
-										return $q.reject(errResponse);
-									}
-							);
-			},
 		    
 		    createUser: function(user){
 					return $http.post('http://localhost:8080/user/', user)
@@ -44,8 +31,8 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 							);
 			},
 			
-			findUserName: function(name){
-				return $http.post('http://localhost:8080/user/'+name, name)
+			findUserName: function(nombre){
+				return $http.post('http://localhost:8080/user/'+nombre, nombre)
 						.then(
 								function(response){
 									return response.data;

@@ -1682,4 +1682,23 @@ form textarea {
 .logo{
 	    width: 12%;
 }
-
+.alert {
+    padding: 20px;
+    background-color: #F44336;
+    color: white;
+    position: fixed;
+    z-index: 999999999;
+    right: 3%;
+    bottom: 10%;
+    font-size: 10pt;
+    border:  1px solid #F44336;
+    list-style:none;
+    display : none;
+    
+}
+.nameUser {
+	font-weight: bold; 
+	color : #009ad8;
+	font-size: 1.2857142857em;
+	font-weight: 400;
+}

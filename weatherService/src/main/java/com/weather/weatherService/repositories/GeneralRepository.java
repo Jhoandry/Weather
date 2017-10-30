@@ -9,7 +9,7 @@ import com.weather.weatherService.models.Locacion;;
 @RepositoryRestResource
 public interface GeneralRepository  {
 	
-	User finUserName(String nombre);
+	User findByName(String nombre);
 	List<User> findAllUser();
 	User saveUser(User user);
 	User setLocacion(User user);
