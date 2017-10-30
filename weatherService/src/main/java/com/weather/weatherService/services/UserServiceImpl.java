@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
-import com.weather.weatherService.repositories.UserRepository;
+import com.weather.weatherService.repositories.GeneralRepository;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private GeneralRepository userRepository;
 	
 	@Override
 	public List<User> findAllUser() {
@@ -52,6 +52,13 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
+
+	@Override
+	public User setLocacion(User user) {
+		user = userRepository.setLocacion(user);
+		return user;
+	}
+	
 
 	
 }

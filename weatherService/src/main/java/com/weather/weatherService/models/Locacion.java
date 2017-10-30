@@ -18,6 +18,12 @@ public class Locacion {
 		this.region = region;
 	}
 
+	public Locacion() {
+		this.woeid = 0;
+		this.city = "";
+		this.country = "";
+		this.region = "";
+	}
 	public Integer getWoeid() {
 		return woeid;
 	}

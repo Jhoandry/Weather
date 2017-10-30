@@ -9,6 +9,8 @@ public interface UserService {
 
 	User findByName(String nombre);
 	List<User> findAllUser();
-	User saveUser(User person);
+	User saveUser(User user);
+	User setLocacion(User user);
+	
 	boolean isUserExist(String email);
 }

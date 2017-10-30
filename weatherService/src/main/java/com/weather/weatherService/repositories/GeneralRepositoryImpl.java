@@ -1,18 +1,20 @@
 package com.weather.weatherService.repositories;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.weather.weatherService.models.Locacion;
 import com.weather.weatherService.models.User;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class GeneralRepositoryImpl implements GeneralRepository {
 
 	@Autowired
 	MongoOperations mongoOperations;
@@ -41,6 +43,17 @@ public class UserRepositoryImpl implements UserRepository {
 	public User saveUser(User user) {
 		System.out.println("################## saveUser");
 		mongoOperations.save(user);
+		
+		return user;
+	}
+
+	@Override
+	public User setLocacion(User user) {
+		System.out.println("################## Update locaciones");
+		Query query = new Query(Criteria.where("email").is(user.getEmail()));
+		Update update = new Update().set("locaciones", user.getLocaciones());
+		mongoOperations.updateMulti(query, update, User.class);
+		user = (User) mongoOperations.findOne(query, User.class);
 		
 		return user;
 	}

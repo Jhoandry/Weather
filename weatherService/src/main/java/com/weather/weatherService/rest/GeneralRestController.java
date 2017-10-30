@@ -20,7 +20,7 @@ import com.weather.weatherService.models.User;
 import com.weather.weatherService.services.UserService;
 
 @RestController
-public class UserRestController {
+public class GeneralRestController {
 
 	@Autowired
     UserService userService;  //Service which will do all data retrieval/manipulation work
@@ -56,21 +56,29 @@ public class UserRestController {
   //-------------------Create a User--------------------------------------------------------
     
     @RequestMapping(method=RequestMethod.POST, value="/user/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@RequestBody User user,    UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
 
     	System.out.println("Creating User " + user.getNombre());
     		 
 	        if (userService.isUserExist(user.getEmail())) {
 	            System.out.println("A User with name " + user.getNombre() + " already exist");
-	            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+	            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	        }else {
+	        	user= userService.saveUser(user);
+		        return new ResponseEntity<User>(user, HttpStatus.OK);
 	        }
-	 
-	        userService.saveUser(user);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getEmail()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	 	        
 	    }
          
+//-------------------Update Location--------------------------------------------------------
+    
+    @RequestMapping(method=RequestMethod.PUT, value="/locaciones/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> setLocacion(@RequestBody User user) {
+
+    	System.out.println("add Locaciones" + user.getNombre());
+        user = userService.setLocacion(user);
+
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
 
 }	

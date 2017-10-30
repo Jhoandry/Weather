@@ -34,8 +34,8 @@
 				<div class="main-navigation">
 					<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
 					<ul class="menu" ng-show='GC.botonSubscribirse'>
-							<li class="menu-item current-menu-item"><a ng-click='GC.mostrarFormLogueo()'>Login</a></li>
-							<li class="menu-item current-menu-item"><a ng-click='GC.mostrarFormSubscribirse()'>Subscrirse</a></li>
+							<li class="menu-item current-menu-item"><a ng-click='GC.mostrarFormLogueo()'>Iniciar sesión</a></li>
+							<li class="menu-item current-menu-item"><a ng-click='GC.mostrarFormSubscribirse()'>Registrarse</a></li>
 					</ul>
 					<ul class="menu"  ng-show='GC.menu'>
 							<li class="menu-item current-menu-item"><a>{{GC.user.nombre}}</a></li>
@@ -65,6 +65,7 @@
 		</div> <!-- .site-header -->
 		<div class="row hero" data-bg-image="images/banner.png">
 		
+		<!--***********************************************--BUSCAR LOCACION--***********************************************-->
 			<div class="container col-sm-10" >
 				<form ng-submit="GC.getLocation()" class="find-location">
 					<input type="text" ng-model="GC.location" placeholder="buscar locacion...">
@@ -93,50 +94,76 @@
 				</div>
 			</div>		
 			<br/>
+			
+		<!-- ***********************************************--CLIMA LOCACION--*********************************************** -->
 			<div class="container col-sm-10">
 				<div class="forecast-table" ng-show='GC.climaLocation.forecast.length > 0' align="center">
-						<div class="forecast-container">
-							<div class="today forecast">
-								<div class="forecast-header">
-									<div class="day">{{GC.climaLocation.forecast[0].day}}</div>
-									<div class="date">{{GC.climaLocation.forecast[0].date}}</div>
-								</div> <!-- .forecast-header -->
-								<div class="forecast-content">
-									<div class="location">{{GC.locationFind.city}}</div>
-									<div class="degree">
-										<div class="num">{{GC.climaLocation.condition.temp}}<sup>o</sup>C</div>
-										<div class="forecast-icon">
-											<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=90>
-										</div>	
-										<span>{{GC.climaLocation.condition.text}}</span>
-									</div>
-									<span><img src="images/cold.png" width=20>{{GC.climaLocation.forecast[0].high}}</span>
-									<span><img src="images/hot.png" width=20>{{GC.climaLocation.forecast[0].low}}</span>
+					<div class="forecast-container">
+						<div class="today forecast">
+							<div class="forecast-header">
+								<div class="day">{{GC.climaLocation.forecast[0].day+" "+GC.climaLocation.forecast[0].date}}</div>
+								<div class="date" ng-show="GC.user.email != ''"><img ng-click="GC.setLocacion()" src="images/favorite.png" title="Agregar a Favoritos"  width=25  ng-show="!GC.exiteLocacion()"></div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="location">{{GC.locationFind.city}}</div>
+								<div class="degree">
+									<div class="num">{{GC.climaLocation.condition.temp}}<sup>o</sup>C</div>
+									<div class="forecast-icon">
+										<img ng-src="{{GC.getIcon(GC.climaLocation.condition.code)}}" alt="" width=60>
+									</div>	
+									<span>{{GC.climaLocation.condition.text}}</span>
 								</div>
+								<span><img src="images/cold.png" width=20>{{GC.climaLocation.forecast[0].high}}</span>
+								<span><img src="images/hot.png" width=20>{{GC.climaLocation.forecast[0].low}}</span>
 							</div>
-							<div class="forecast"  ng-repeat="clima in GC.climaLocation.forecast track by $index" ng-show ='$index > 0'>
-									<div class="forecast-header">
-										<div class="day">{{clima.day}}</div>
-									</div> <!-- .forecast-header -->
-									<div class="forecast-content">
-										<div class="forecast-icon">
-											<img ng-src="{{GC.getIcon(clima.code)}}" alt="" width=44>
-										</div>
-										<div class="degree">
-											<div align="right"><img src="images/cold.png" style="float: left;" width=25></div>
-											<div align="center">{{clima.high}}<sup>o</sup>C</div>
-										</div>
-										<div class="degree">
-											<div align="right"><img src="images/hot.png" style="float: left;" width=25></div>
-											<div align="center">{{clima.low}}<sup>o</sup>C</div>
-										</div>
-									</div> 
-									<small>{{clima.text}}</small>
-							</div>											
 						</div>
+						<div class="forecast"  ng-repeat="clima in GC.climaLocation.forecast track by $index" ng-show ='$index > 0 && $index < 8'>
+							<div class="forecast-header">
+								<div class="day">{{clima.day}}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img ng-src="{{GC.getIcon(clima.code)}}" alt="" width=44>
+								</div>
+								<div class="degree">
+									<div align="right"><img src="images/cold.png" style="float: left;" width=25></div>
+									<div align="center">{{clima.high}}<sup>o</sup>C</div>
+								</div>
+								<div class="degree">
+									<div align="right"><img src="images/hot.png" style="float: left;" width=25></div>
+									<div align="center">{{clima.low}}<sup>o</sup>C</div>
+								</div>
+							</div> 
+							<small>{{clima.text}}</small>
+						</div>											
+					</div>
 				</div>
 			</div>
-        	        	
+        	<br/>	
+        	
+	 <!-- ***********************************************--CLIMA LOCACIONES FAVORITOS--*********************************************** -->       	
+			<div class="container col-sm-10">
+				<div class="forecast-table" ng-show='GC.locacionesFav.length > 0' align="center">
+					<div class="forecast-container">
+						<div class="today forecast col-sm-3" ng-repeat="climaFav in GC.locacionesFav track by $index" style=" width: 300px;">
+							<div class="forecast-content">
+								<div class="location">
+									{{climaFav.location.city}} 
+									<span><img src="images/remove.png"  title="Remover"width=20 ng-click="GC.removeLocacion(climaFav.location.city)"></span>
+								</div>
+								<div class="degree">
+									<div class="num">{{climaFav.item.condition.temp}}<sup>o</sup>C</div>
+									<div class="forecast-icon">
+										<img ng-src="{{GC.getIcon(climaFav.item.condition.code)}}" alt="" width=70>
+									</div>	
+									<span>{{climaFav.item.condition.text}}</span>
+								</div>
+								<span>{{climaFav.item.condition.date}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	

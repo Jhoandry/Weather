@@ -6,13 +6,15 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Document(collection = "user")
 public class User {
 	@Id
 	private String email;
 	private String nombre;
+	@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	private List<Locacion> locaciones;
-
 	
 	public User(String nombre, String email, List<Locacion> locaciones) {
 		this.nombre = nombre;
@@ -48,5 +50,6 @@ public class User {
 	public void setLocaciones(List<Locacion> locaciones) {
 		this.locaciones = locaciones;
 	}
+	
 	
 }

@@ -12,6 +12,7 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
     self.locations = [];
     self.climalocation = {};
     self.locationFind = { woeid:0, city:'', country:'', region:''}
+    self.locacionesFav = [];
 
     //************* CRUD Usuario ***********************
     
@@ -20,8 +21,10 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    	.then(
 	    		function(data) {
 				    self.user = data;
-				    if(self.user.email!="")
+				    if(self.user.email!=""){
 				    	self.mostrarMenu();
+				    	self.buscarClimaFav();
+				    }
 			    },
 	      		function(errResponse){
 			    	console.error('Error while creating User.');
@@ -117,19 +120,23 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    
 	    self.salir = function(){
 	    	console.log('salir')
-	    	self.user={nombre:'',email:''};
+	    	self.user = {email:'',nombre:'', locaciones: []};
+		    self.location = '';
+		    self.locations = [];
+		    self.locacionesFav = [];
 	    	self.menu = false; 
 	    	self.formSubscribirse = false;
 	    	self.formLogin = false;
 	    	self.botonSubscribirse = true;
+	    	self.locacionesFav = [];
 	    };
 
 	//**********************Wheater Services*********************
 	    self.getIcon = function(cod){
 	    	var url= "images/icons/";
-	    	if(cod==1 || cod==2 || cod==3 || cod==37 || cod==38 || cod==39 ||cod==0)
+	    	if(cod==1 || cod==2 || cod==3 || cod==37 ||cod==0)
 	    		return url+"icon-8.svg";
-	    	else if(cod==4 || cod==5 || cod==6 || cod==7 || cod==45 || cod==47)
+	    	else if(cod==4 || cod==5 || cod==6 || cod==7 || cod==45 || cod==47 || cod==38 || cod==39)
 	    		return url+"icon-11.svg";
 	    	else if(cod==8 || cod==10 || cod==13 || cod==14 || cod==35 || cod==17 ||cod==18)
 	    		return url+"icon-13.svg";
@@ -144,8 +151,27 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	    	else if(cod==31 || cod==32 || cod==33 || cod==34 || cod==36)
 	    		return url+"icon-2.svg";
 	    	else if(cod==16 || cod==25 || cod==41 || cod==42 || cod==43 || cod==46)
-	    		return url+"icon-8.svg";
+	    		return url+"cold.png";
 	    };
+	    
+	    self.buscarClimaFav = function(){
+	    	var x;
+	    	self.locacionesFav = [];
+    		for (x in self.user.locaciones) {
+
+    			UserService.findWeather(self.user.locaciones[x].woeid)
+    	    	.then(
+    	    		function(data) {
+    				    if(data.query.results != null){
+    				    	 self.locacionesFav.push(data.query.results.channel);
+    				    }
+    			    },
+    	      		function(errResponse){
+    			    	console.error('Error weatherLocation.');
+    		        });
+    		}
+	    };
+	    	    
 	    
 	    self.weatherLocation = function(woeid){
 	    	UserService.findWeather(woeid)
@@ -190,5 +216,54 @@ app.controller("generalControlador",  ['$scope', 'UserService', function($scope,
 	        self.locations = [];
 	        self.climaLocation = {};
 	    	self.findLocation(self.location);
-	    }
+	    };
+	    
+
+		//**********************Locaciones Favoritas*********************
+	    
+	    self.updateLocation = function(user){
+	    	UserService.addLocacion(user)
+	    	.then(
+	    		function(data) {
+				    console.log(data);
+				    self.user.locaciones = data.locaciones;
+				    self.buscarClimaFav();
+			    },
+	      		function(errResponse){
+			    	console.error('Error weatherLocation.');
+		        });
+	    };
+	    
+	    self.exiteLocacion = function(){
+	    	if(self.user.locaciones.length==0)
+	    		return false;
+	    	else{
+	    		var x;
+	    		for (x in self.user.locaciones) {
+	    			if(self.user.locaciones[x].woeid==self.locationFind.woeid)
+	    				return true;
+	    		}
+	    	}
+	    	return false;
+	    };
+	    
+	    self.setLocacion = function(){
+	    	console.log("add locaciones favoritas");    	
+	    	self.user.locaciones.push(self.locationFind);
+	    	self.updateLocation(self.user);
+	    };
+	    
+	    self.removeLocacion = function(city){
+	    	console.log("remove locacion "+ city);
+	    	for(var x in self.user.locaciones){
+	    		if(self.user.locaciones[x].city==city){
+	    	    	delete self.user.locaciones[x];
+	    	    	self.user.locaciones.splice(x,1);
+	    			break;
+	    		}
+	    	}
+	    	
+	    	self.updateLocation(self.user);
+	    	
+	    };
 }]);

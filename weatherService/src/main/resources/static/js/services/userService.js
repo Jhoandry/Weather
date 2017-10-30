@@ -30,27 +30,15 @@ app.factory('UserService', ['$http', '$q', function($http, $q){
 							);
 		    },
 		    
-		    updateUser: function(user, id){
-					return $http.put('http://localhost:8080/user/'+id, user)
+		    addLocacion : function(user){
+		    	console.log(user);
+		    	return $http.put('http://localhost:8080/locaciones/', user)
 							.then(
 									function(response){
 										return response.data;
 									}, 
 									function(errResponse){
 										console.error('Error while updating user');
-										return $q.reject(errResponse);
-									}
-							);
-			},
-		    
-			deleteUser: function(id){
-					return $http.delete('http://localhost:8080/user/'+id)
-							.then(
-									function(response){
-										return response.data;
-									}, 
-									function(errResponse){
-										console.error('Error while deleting user');
 										return $q.reject(errResponse);
 									}
 							);
